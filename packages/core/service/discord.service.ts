@@ -61,6 +61,7 @@ export class DiscordService
   async onApplicationBootstrap(): Promise<void> {
     try {
       await this.client.login(this.clientToken);
+      this.client.setMaxListeners(300);
     } catch (err) {
       this.logger.error('Failed to connect to Discord API');
       this.logger.error(err);
