@@ -26,6 +26,7 @@ describe('On event', () => {
           DiscordModule.forRootAsync({
             imports: [ConfigModule],
             useFactory: (configService: ConfigService) => ({
+              intents: [],
               token: configService.get('TOKEN') || process.env.TOKEN,
               commandPrefix:
                 configService.get('COMMAND_PREFIX') ||
@@ -45,7 +46,7 @@ describe('On event', () => {
     });
   });
 
-  it('Function marked with "On" decorator with { event: \'message\' } args must be called on "message" event', async () => {
+  it('Function marked with "On" decorator with { event: \'messageCreate\' } args must be called on "messageCreate" event', async () => {
     const testingGuildName = 'test';
     const testChannelName = 'test-text-channel';
     const messageText = 'Some important text';
@@ -62,18 +63,24 @@ describe('On event', () => {
 
           @Once({ event: 'ready' })
           async onReady() {
-            guild = await this.discordProvider
-              .getClient()
+            const client = this.discordProvider.getClient();
+            guild = await client
               .guilds.create(testingGuildName);
             const channel = await guild.channels.create(testChannelName, {
-              type: 'text',
+              type: 'GUILD_TEXT',
             });
-            channel.send(messageText);
+            
+            await channel.send(messageText);
           }
 
           @On({ event: 'message' })
           async onMessage(message: Message) {
-            await guild.delete();
+            console.log('on message: startup');
+            try {
+              await guild.delete();
+            } catch (error) {
+              console.error(`Trying to delete guild failed :`, error);
+            }
             await moduleRef.close();
             try {
               expect(message.content).toStrictEqual(messageText);
@@ -92,6 +99,7 @@ describe('On event', () => {
             DiscordModule.forRootAsync({
               imports: [ConfigModule],
               useFactory: (configService: ConfigService) => ({
+                intents: ['GUILDS', 'GUILD_MESSAGES'],
                 token: configService.get('TOKEN') || process.env.TOKEN,
                 commandPrefix:
                   configService.get('COMMAND_PREFIX') ||

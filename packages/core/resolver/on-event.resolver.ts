@@ -71,8 +71,8 @@ export class OnEventResolver implements MethodResolver {
           methodName,
         });
         let message;
-        if (event === 'message') {
-          const messageContext: Message = context[0];
+        if (event === 'message' || event === 'messageCreate') {
+          const messageContext: Message = context[0] as Message;
           let pipeMessageContent;
           try {
             pipeMessageContent = await this.pipeResolver.applyPipe({

@@ -111,8 +111,10 @@ export class DiscordService
   ): WebhookClient {
     if (webhookOptions) {
       return new WebhookClient(
-        webhookOptions.webhookId,
-        webhookOptions.webhookToken,
+        {
+          id: webhookOptions.webhookId,
+          token: webhookOptions.webhookToken,
+        }
       );
     }
   }

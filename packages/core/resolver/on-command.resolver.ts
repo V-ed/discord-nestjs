@@ -48,7 +48,7 @@ export class OnCommandResolver implements MethodResolver {
       isRemoveMessage = false,
     } = metadata;
     this.logger.log(`Initialize command: ${name}`, instance.constructor.name);
-    this.discordService.getClient().on('message', async (message: Message) => {
+    this.discordService.getClient().on('messageCreate', async (message: Message) => {
       //#region check allow handle message
       if (isIgnoreBotMessage && message.author.bot) {
         return;
@@ -94,8 +94,8 @@ export class OnCommandResolver implements MethodResolver {
       //#endregion
 
       //#region apply middleware, guard, pipe
-      const eventName = 'message';
-      const context: ClientEvents['message'] = [message];
+      const eventName = 'messageCreate';
+      const context: ClientEvents['messageCreate'] = [message];
       await this.middlewareResolver.applyMiddleware(eventName, context);
       const isAllowFromGuards = await this.guardResolver.applyGuard({
         instance,

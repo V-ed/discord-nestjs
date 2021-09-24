@@ -14,6 +14,8 @@ export class DiscordCatchService {
     const messageEmbed =
       this.validationProvider.getErrorMessage() ??
       this.validationProvider.getDefaultErrorMessage(err, message.content);
-    await message.reply(messageEmbed);
+    await message.reply({
+      embeds: [messageEmbed]
+    });
   }
 }

@@ -29,7 +29,7 @@ export class ValidationProvider {
             const name = this.getCauseName(positions);
             const value = Object.values(errItem.constraints).map(
               (item: string) => this.replaceStringValue(item, causeValue),
-            );
+            ).join(' ');
 
             return {
               inline: true,
