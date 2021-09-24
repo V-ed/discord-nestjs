@@ -49,7 +49,7 @@ export class OnCommandResolver implements MethodResolver {
       isRemoveMessage = false,
     } = metadata;
     const names = [name, ...aliases];
-    this.logger.log(`Initialize command: ${name}`, instance.constructor.name);
+    this.logger.log(`Initialize command: ${names.join(', ')}`, instance.constructor.name);
     this.discordService.getClient().on('messageCreate', async (message: Message) => {
       //#region check allow handle message
       if (isIgnoreBotMessage && message.author.bot) {
