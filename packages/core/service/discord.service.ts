@@ -45,7 +45,7 @@ export class DiscordService
       intents,
       ...discordOption
     } = options;
-    const autoIntents: typeof intents = ['GUILDS', 'GUILD_MESSAGES', ...(Array.isArray(intents) ? intents : [intents])];
+    const autoIntents: typeof intents = ['GUILDS', 'GUILD_MESSAGES', ...(Array.isArray(intents) ? intents : [intents])].filter(i => !!i);
     
     this.client = new Client({...discordOption, intents: autoIntents});
     this.clientToken = token;

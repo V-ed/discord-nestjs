@@ -4,7 +4,7 @@ import { DiscordModuleWebhookOptions } from './discord-module-webhook-options';
 import { PipeType } from '../util/type/pipe-type';
 import { GuardType } from '../util/type/guard-type';
 
-export interface DiscordModuleOption extends ClientOptions {
+export interface DiscordModuleOption extends Omit<ClientOptions, 'intents'> {
   /**
    * Authorization token
    */
@@ -44,4 +44,11 @@ export interface DiscordModuleOption extends ClientOptions {
    * Webhook for the bot
    */
   webhook?: DiscordModuleWebhookOptions;
+  
+  /**
+   * Additional intents to give to the bot.
+   * 
+   * Will be merged to `GUILDS` and `GUILD_MESSAGES`.
+   */
+  intents?: ClientOptions['intents'];
 }

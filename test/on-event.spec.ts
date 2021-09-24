@@ -99,7 +99,6 @@ describe('On event', () => {
             DiscordModule.forRootAsync({
               imports: [ConfigModule],
               useFactory: (configService: ConfigService) => ({
-                intents: ['GUILDS', 'GUILD_MESSAGES'],
                 token: configService.get('TOKEN') || process.env.TOKEN,
                 commandPrefix:
                   configService.get('COMMAND_PREFIX') ||
