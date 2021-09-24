@@ -41,12 +41,14 @@ export class OnCommandResolver implements MethodResolver {
     }
     const {
       name,
+      aliases = [],
       prefix = this.discordService.getCommandPrefix(),
       isRemovePrefix = true,
       isIgnoreBotMessage = true,
       isRemoveCommandName = true,
       isRemoveMessage = false,
     } = metadata;
+    const names = [name, ...aliases];
     this.logger.log(`Initialize command: ${name}`, instance.constructor.name);
     this.discordService.getClient().on('messageCreate', async (message: Message) => {
       //#region check allow handle message
@@ -67,7 +69,7 @@ export class OnCommandResolver implements MethodResolver {
         messageContent,
         messagePrefix.length,
       );
-      if (messagePrefix !== prefix || commandName !== name) {
+      if (messagePrefix !== prefix || !names.includes(commandName)) {
         return; // not suitable for handler
       }
       const commandOptions = this.getCommandOptions(metadata);

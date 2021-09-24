@@ -8,6 +8,11 @@ export interface OnCommandDecoratorOptions {
    * Command name
    */
   name: string;
+  
+  /**
+   * Command aliases
+   */
+  aliases?: string[];
 
   /**
    * Your message prefix
