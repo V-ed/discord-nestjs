@@ -42,9 +42,12 @@ export class DiscordService
       webhook,
       usePipes,
       useGuards,
+      intents,
       ...discordOption
     } = options;
-    this.client = new Client(discordOption);
+    const autoIntents: typeof intents = ['GUILDS', 'GUILD_MESSAGES', ...(Array.isArray(intents) ? intents : [intents])];
+    
+    this.client = new Client({...discordOption, intents: autoIntents});
     this.clientToken = token;
     this.commandPrefix = commandPrefix;
     this.allowGuilds = allowGuilds;
